@@ -1,0 +1,25 @@
+{
+  "name": "yt-proxy",
+  "version": "0.0.1",
+  "description": "YouTube proxy service",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "watch": "babel -s true -d dist -w src/",
+    "predev": "babel -s true -d dist src/",
+    "dev": "NODE_ENV=development concurrently --names 'node,babel' -p name -k 'nodemon -w dist/ dist/index.js' 'npm run watch'",
+    "build": "NODE_ENV=production babel -d dist src"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "concurrently": "^3.5.1",
+    "https-proxy-agent": "^2.2.0",
+    "nodemon": "^1.17.1"
+  },
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
+}

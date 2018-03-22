@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/debug.js"],"names":[],"mappings":";;;;;;AAAA;;;;;;kBAEe,qBAAM,UAAN,C","file":"debug.js","sourcesContent":["import debug from 'debug'\n\nexport default debug('yt-proxy')\n"]}
