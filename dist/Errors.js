@@ -19,4 +19,3 @@ class RequestFailError extends Error {
   }
 }
 exports.RequestFailError = RequestFailError;
-//# sourceMappingURL=Errors.js.map

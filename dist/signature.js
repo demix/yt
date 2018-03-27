@@ -162,4 +162,3 @@ Signature.download = function (name, url) {
     });
   });
 };
-//# sourceMappingURL=signature.js.map

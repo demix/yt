@@ -17,4 +17,3 @@ const watchUrl = exports.watchUrl = '/watch';
 if (proxy) {
   (0, _debug2.default)(`Using proxy ${proxy}`);
 }
-//# sourceMappingURL=config.js.map

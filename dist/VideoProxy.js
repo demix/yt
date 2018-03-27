@@ -85,4 +85,3 @@ class VideoProxy extends _stream.Readable {
 }
 exports.default = VideoProxy;
 VideoProxy.defaultConfig = {};
-//# sourceMappingURL=VideoProxy.js.map

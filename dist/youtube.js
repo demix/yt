@@ -33,10 +33,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class YouTubeReader extends _stream.Readable {
 
-  constructor(id, host) {
+  constructor(id, { host, protocol }) {
     super();
 
     this.getAdaptiveFmt = async html => {
+      // 音视频不同资源，暂时不用
+      return this.getFmt(html);
       (0, _debug2.default)('Get adaptive fmt');
       const result = html.match(YouTubeReader.adaptiveFmtReg);
       if (!result) {
@@ -106,7 +108,7 @@ class YouTubeReader extends _stream.Readable {
           type, s, sig, signature
         } = _querystring2.default.parse(t);
         /* eslint-enable */
-
+        console.log(_querystring2.default.parse(t));
         if (!YouTubeReader.qualityMap[itag]) {
           return;
         }
@@ -124,13 +126,17 @@ class YouTubeReader extends _stream.Readable {
           }
         }
 
-        targets[YouTubeReader.qualityMap[itag]] = {
-          itag,
-          url: this.getUrl(url),
-          quality,
-          type,
-          size: ''
-        };
+        url = this.getUrl(url);
+
+        if (url) {
+          targets[YouTubeReader.qualityMap[itag]] = {
+            itag,
+            url,
+            quality,
+            type,
+            size: '1920x1080'
+          };
+        }
       })).catch(e => console.error(e));
       this.targets = targets;
       return Promise.resolve(targets);
@@ -139,10 +145,9 @@ class YouTubeReader extends _stream.Readable {
     this.getUrl = url => {
       try {
         const buff = Buffer.from(url);
-        return `${_config.watchUrl.startsWith('http') ? _config.watchUrl : 'http://' + this.host + _config.watchUrl}?url=${buff.toString('base64')}`;
+        return `${_config.watchUrl.startsWith('http') ? _config.watchUrl : this.protocol + '//' + this.host + _config.watchUrl}?url=${buff.toString('base64')}`;
       } catch (e) {
         console.log(`Base64 Error: ${url}`);
-        throw e;
       }
     };
 
@@ -195,6 +200,7 @@ class YouTubeReader extends _stream.Readable {
     }
     this.id = id;
     this.host = host;
+    this.protocol = protocol;
 
     this.getDownloadLink().then(this.getAdaptiveFmt)
     // .then(this.fetchVideo)
@@ -278,9 +284,8 @@ YouTubeReader.getDecryptedSignature = async function (html, s) {
   return '';
 };
 
-function loadVideo(id, host) {
+function loadVideo(id, { host, protocol }) {
   (0, _debug2.default)(`Get youtube video with id: ${id}`);
-  const stream = new YouTubeReader(id, host);
+  const stream = new YouTubeReader(id, { host, protocol });
   return stream;
 }
-//# sourceMappingURL=youtube.js.map

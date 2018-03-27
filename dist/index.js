@@ -31,7 +31,7 @@ function NotFound(res, e) {
 }
 
 const server = _http2.default.createServer((req, res) => {
-  const { host } = req.headers;
+  const { host, 'x-forwarded-protocol': protocol = 'http:' } = req.headers;
   (0, _debug2.default)(`Serve request with host ${host}`);
 
   const url = new _url.URL(req.url, `http://${host}`);
@@ -41,7 +41,7 @@ const server = _http2.default.createServer((req, res) => {
       {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Content-Type', 'application/json');
-        const stream = (0, _youtube.loadVideo)(url.searchParams.get('v'), host);
+        const stream = (0, _youtube.loadVideo)(url.searchParams.get('v'), { host, protocol });
         stream.on('error', e => NotFound(res, e));
         stream.on('data', data => {
           res.write(data);
@@ -86,4 +86,3 @@ const server = _http2.default.createServer((req, res) => {
 
 server.listen(port);
 console.log(`Server listening on ${port}`);
-//# sourceMappingURL=index.js.map
